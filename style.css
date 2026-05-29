@@ -90,10 +90,16 @@ body {
 }
 
 .logo img {
-  width: 45px;
-  height: 45px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.logo-text {
+  font-size: 22px;
+  color: #242424;
+  font-family: Luckiest Guy, cursive;
 }
 
 .nav-links {
@@ -132,16 +138,25 @@ body {
 /* ── HERO ── */
 .hero {
   min-height: 100vh;
-  background: linear-gradient(135deg, #FF6B6B, #FFE66D, #4ECDC4);
+  background-color: grey;
+  background-image: url('images/hero.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+
   padding: 100px 20px 60px;
 }
 
 .hero-content {
   max-width: 700px;
+  background-color: #24242499;
+  border-radius: 12px;
+  padding: 40px 30px;
 }
 
 .hero h1 {
@@ -350,8 +365,13 @@ body {
 }
 
 .location-info i {
-  color: #FF6B6B;
+  color: #4ECDC4;
   width: 20px;
+}
+
+.btn.btn-whatsapp{
+  background: #777777;
+  color: white;
 }
 
 .map-container {
@@ -363,7 +383,7 @@ body {
 /* ── CONTACT ── */
 .contact {
   padding: 80px 0;
-  background: linear-gradient(135deg, #A29BFE, #4ECDC4);
+  background: #335250;
   text-align: center;
 }
 
