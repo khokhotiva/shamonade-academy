@@ -30,7 +30,7 @@ body {
   cursor: pointer;
 }
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-5px) scale(1.04);
   opacity: 0.9;
 }
 .btn-whatsapp {
@@ -404,7 +404,7 @@ body {
   width: 20px;
 }
 .btn.btn-whatsapp {
-  background: #777777;
+  background: #25D366;
   color: white;
 }
 .map-container {
@@ -516,4 +516,231 @@ body {
   .gallery-page-item img {
     height: 280px;
   }
+}
+
+/* ================================
+   CHILD-FRIENDLY MOTION LAYER
+   ================================ */
+:root {
+    --motion-soft: 700ms cubic-bezier(.22, 1, .36, 1);
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* Keeps decorations behind content without changing the site's layout */
+.floating-scene {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.floating-scene .float-item {
+    position: absolute;
+    user-select: none;
+    will-change: transform;
+}
+
+.butterfly {
+    width: 58px;
+    color: #ff8fab;
+    opacity: .95;
+    animation: butterflyDrift 7s ease-in-out infinite;
+}
+
+.butterfly svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.butterfly-one { top: 19%; left: 4%; }
+.butterfly-two { top: 63%; right: 4%; color: #8ecae6; animation-delay: -4s; animation-duration: 14s; }
+
+.letter,
+.number {
+    font-weight: 800;
+    font-family: Arial, sans-serif;
+    line-height: 1;
+    opacity: .24;
+    font-size: clamp(42px, 5vw, 72px);
+    animation: gentleFloat 5.5s ease-in-out infinite;
+}
+
+.letter { color: #ff7f6a; }
+.number { color: #5aa9e6; }
+.letter-a { top: 31%; right: 7%; animation-delay: -2s; }
+.letter-b { top: 76%; left: 6%; animation-delay: -5s; }
+.number-one { top: 47%; left: 8%; animation-delay: -1s; }
+.number-two { top: 24%; right: 17%; animation-delay: -4s; }
+.number-three { top: 83%; right: 12%; animation-delay: -6s; }
+
+.animal,
+.book-float,
+.star-float {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    opacity: .28;
+    font-size: 21px;
+    animation: bob 4.8s ease-in-out infinite;
+}
+
+.animal { color: #6c8f5b; background: rgba(108,143,91,.08); }
+.book-float { color: #f29e4c; background: rgba(242,158,76,.08); animation-delay: -2s; }
+.star-float { color: #f4c95d; background: rgba(244,201,93,.1); animation-delay: -4s; }
+.animal-one { top: 38%; left: 2%; }
+.animal-two { top: 69%; right: 10%; animation-delay: -3s; }
+.book-float { top: 13%; right: 28%; }
+.star-float { top: 88%; left: 22%; }
+
+/* Progress indicator */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 3000;
+    pointer-events: none;
+}
+
+.scroll-progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #ff7f6a;
+    transform-origin: left;
+}
+
+/* Scroll reveals */
+.reveal-section .section-title,
+.reveal-section > .about-content,
+.reveal-section > .about-image,
+.reveal-section > .services-grid,
+.reveal-section > .gallery-grid,
+.reveal-section > .location-content,
+.reveal-section > .contact-content {
+    opacity: 0;
+    transform: translateY(55px);
+    transition: opacity var(--motion-soft), transform var(--motion-soft);
+}
+
+.reveal-section.is-visible .section-title,
+.reveal-section.is-visible > .about-content,
+.reveal-section.is-visible > .about-image,
+.reveal-section.is-visible > .services-grid,
+.reveal-section.is-visible > .gallery-grid,
+.reveal-section.is-visible > .location-content,
+.reveal-section.is-visible > .contact-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-item {
+    opacity: 0;
+    transform: translateY(45px) scale(.96);
+    transition: opacity 850ms ease, transform 850ms cubic-bezier(.22,1,.36,1);
+}
+
+.reveal-item.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Smoother image movement */
+.about-image img,
+.service-image img,
+.gallery-item img {
+    transition: transform 800ms cubic-bezier(.22,1,.36,1), filter 600ms ease;
+    will-change: transform;
+}
+
+.about-image:hover img,
+.service-card:hover .service-image img,
+.gallery-item:hover img {
+    transform: scale(1.09);
+    filter: saturate(1.05);
+}
+
+/* Hero entrance */
+.hero-content > * {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: heroIn 800ms cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-content h1 { animation-delay: 100ms; }
+.hero-content h2 { animation-delay: 220ms; }
+.hero-content p { animation-delay: 340ms; }
+.hero-buttons { animation-delay: 460ms !important; }
+
+/* Slight lift for existing cards/buttons */
+.service-card,
+.gallery-item,
+.btn,
+.contact-item {
+    transition: transform 350ms cubic-bezier(.22,1,.36,1), box-shadow 350ms ease, opacity 350ms ease;
+}
+
+.service-card:hover { transform: translateY(-14px) scale(1.015); }
+.gallery-item:hover { transform: translateY(-8px) scale(1.01); }
+
+@keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+    50% { transform: translate3d(0, -16px, 0) rotate(4deg); }
+}
+
+@keyframes bob {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0); }
+    50% { transform: translate3d(0, -12px, 0) rotate(5deg); }
+}
+
+@keyframes butterflyDrift {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+    25% { transform: translate3d(22px, -18px, 0) rotate(7deg); }
+    50% { transform: translate3d(42px, 5px, 0) rotate(-4deg); }
+    75% { transform: translate3d(18px, 20px, 0) rotate(6deg); }
+}
+
+@media (max-width: 768px) {
+    .floating-scene .float-item { opacity: .16; }
+    .butterfly { width: 43px; }
+    .animal,
+    .book-float,
+    .star-float { width: 34px; height: 34px; font-size: 16px; }
+    .letter,
+    .number { font-size: 42px; }
+    .butterfly-one { left: -8px; }
+    .butterfly-two { right: -8px; }
+    .book-float { right: 8%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+    .reveal-section .section-title,
+    .reveal-section > .about-content,
+    .reveal-section > .about-image,
+    .reveal-section > .services-grid,
+    .reveal-section > .gallery-grid,
+    .reveal-section > .location-content,
+    .reveal-section > .contact-content,
+    .reveal-item,
+    .hero-content > * {
+        opacity: 1;
+        transform: none;
+    }
 }
