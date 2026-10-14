@@ -1,219 +1,43 @@
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
+/* global use, db */
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+// The result of the last command run in a playground is shown on the results panel.
+// By default the first 20 documents will be returned with a cursor.
+// Use 'console.log()' to print to the debug output.
+// For more documentation on playgrounds please refer to
+// https://www.mongodb.com/docs/mongodb-vscode/playgrounds/
 
+// Select the database to use.
+use('mongodbVSCodePlaygroundDB');
 
-// ========================================
-// MOBILE NAVIGATION
-// ========================================
+// Insert a few documents into the sales collection.
+db.getCollection('sales').insertMany([
+  { 'item': 'abc', 'price': 10, 'quantity': 2, 'date': new Date('2014-03-01T08:00:00Z') },
+  { 'item': 'jkl', 'price': 20, 'quantity': 1, 'date': new Date('2014-03-01T09:00:00Z') },
+  { 'item': 'xyz', 'price': 5, 'quantity': 10, 'date': new Date('2014-03-15T09:00:00Z') },
+  { 'item': 'xyz', 'price': 5, 'quantity': 20, 'date': new Date('2014-04-04T11:21:39.736Z') },
+  { 'item': 'abc', 'price': 10, 'quantity': 10, 'date': new Date('2014-04-04T21:23:13.331Z') },
+  { 'item': 'def', 'price': 7.5, 'quantity': 5, 'date': new Date('2015-06-04T05:08:13Z') },
+  { 'item': 'def', 'price': 7.5, 'quantity': 10, 'date': new Date('2015-09-10T08:43:00Z') },
+  { 'item': 'abc', 'price': 10, 'quantity': 5, 'date': new Date('2016-02-06T20:20:13Z') },
+]);
 
-if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-}
+// Run a find command to view items sold on April 4th, 2014.
+const salesOnApril4th = db.getCollection('sales').find({
+  date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') }
+}).count();
 
-// Close menu when a link is clicked
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-    });
-});
+// Print a message to the output window.
+console.log(`${salesOnApril4th} sales occurred in 2014.`);
 
-
-// ========================================
-// SCROLL REVEAL ANIMATIONS
-// ========================================
-
-const revealElements = document.querySelectorAll(
-    '.section-title, .about-text, .about-image, .service-card, .gallery-item, .location-card, .contact-card'
-);
-
-const revealObserver = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('reveal-visible');
-                revealObserver.unobserve(entry.target);
-            }
-        });
-    },
-    {
-        threshold: 0.15
-    }
-);
-
-revealElements.forEach((element) => {
-    element.classList.add('reveal-element');
-    revealObserver.observe(element);
-});
-
-
-// ========================================
-// STAGGER SERVICE CARDS
-// ========================================
-
-const serviceCards = document.querySelectorAll('.service-card');
-
-serviceCards.forEach((card, index) => {
-    card.style.transitionDelay = `${index * 100}ms`;
-});
-
-
-// ========================================
-// STAGGER GALLERY IMAGES
-// ========================================
-
-const galleryItems = document.querySelectorAll('.gallery-item');
-
-galleryItems.forEach((item, index) => {
-    item.style.transitionDelay = `${index * 80}ms`;
-});
-
-
-// ========================================
-// SCROLL PARALLAX
-// ========================================
-
-const floatingElements = document.querySelectorAll(
-    '.floating-butterfly, .floating-letter, .floating-number, .floating-animal'
-);
-
-let ticking = false;
-
-function updateParallax() {
-    const scrollPosition = window.scrollY;
-
-    floatingElements.forEach((element, index) => {
-        const speed = 0.08 + (index % 4) * 0.025;
-        const direction = index % 2 === 0 ? 1 : -1;
-
-        element.style.transform =
-            `translate3d(0, ${scrollPosition * speed * direction}px, 0)`;
-    });
-
-    ticking = false;
-}
-
-window.addEventListener(
-    'scroll',
-    () => {
-        if (!ticking) {
-            window.requestAnimationFrame(updateParallax);
-            ticking = true;
-        }
-    },
-    { passive: true }
-);
-
-
-// ========================================
-// FLOATING ELEMENTS
-// ========================================
-
-floatingElements.forEach((element, index) => {
-    const duration = 5 + (index % 5);
-    const delay = (index % 4) * 0.7;
-
-    element.style.animationDuration = `${duration}s`;
-    element.style.animationDelay = `${delay}s`;
-});
-
-
-// ========================================
-// IMAGE REVEAL
-// ========================================
-
-const images = document.querySelectorAll(
-    '.about-image img, .service-card img, .gallery-item img'
-);
-
-const imageObserver = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('image-visible');
-                imageObserver.unobserve(entry.target);
-            }
-        });
-    },
-    {
-        threshold: 0.2
-    }
-);
-
-images.forEach((image) => {
-    image.classList.add('image-reveal');
-    imageObserver.observe(image);
-});
-
-
-// ========================================
-// HERO FLOATING MOVEMENT
-// ========================================
-
-const hero = document.querySelector('.hero');
-
-if (hero) {
-    window.addEventListener(
-        'scroll',
-        () => {
-            const scrollPosition = window.scrollY;
-
-            if (scrollPosition < window.innerHeight) {
-                hero.style.backgroundPosition =
-                    `center ${50 + scrollPosition * 0.03}%`;
-            }
-        },
-        { passive: true }
-    );
-}
-
-
-// ========================================
-// SCROLL PROGRESS BAR
-// ========================================
-
-const progressBar = document.createElement('div');
-
-progressBar.className = 'scroll-progress';
-
-document.body.appendChild(progressBar);
-
-function updateScrollProgress() {
-    const scrollTop = window.scrollY;
-
-    const documentHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-
-    const progress =
-        documentHeight > 0
-            ? (scrollTop / documentHeight) * 100
-            : 0;
-
-    progressBar.style.width = `${progress}%`;
-}
-
-window.addEventListener(
-    'scroll',
-    updateScrollProgress,
-    { passive: true }
-);
-
-updateScrollProgress();
-
-
-// ========================================
-// REDUCED MOTION SUPPORT
-// ========================================
-
-const prefersReducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-);
-
-if (prefersReducedMotion.matches) {
-    floatingElements.forEach((element) => {
-        element.style.animation = 'none';
-        element.style.transform = 'none';
-    });
-}
+// Here we run an aggregation and open a cursor to the results.
+// Use '.toArray()' to exhaust the cursor to return the whole result set.
+// You can use '.hasNext()/.next()' to iterate through the cursor page by page.
+db.getCollection('sales').aggregate([
+  // Find all of the sales that occurred in 2014.
+  { $match: { date: { $gte: new Date('2014-01-01'), $lt: new Date('2015-01-01') } } },
+  // Group the total sales for each product.
+  { $group: { _id: '$item', totalSaleAmount: { $sum: { $multiply: [ '$price', '$quantity' ] } } } }
+]);
