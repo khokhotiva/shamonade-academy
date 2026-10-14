@@ -415,10 +415,7 @@ revealOnScroll(
         : undefined
     });
   }
-  staggerOnScroll(".about-values .value-item", {
-    trigger: ".about-values",
-    stagger: 0.14
-  });
+  
   
   /* ---------- 15. HOVER ANIMATIONS ---------- */
   function addHoverLift(selector, lift = -6) {
